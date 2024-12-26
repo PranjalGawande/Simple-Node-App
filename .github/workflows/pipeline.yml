@@ -47,6 +47,12 @@ jobs:
       with:
         version: 'v1.24.0'
   
+    - name: Set up kubeconfig
+      run: |
+        echo "${{ secrets.KUBECONFIG_CONTENT }}" > kubeconfig
+        export KUBECONFIG=$PWD/kubeconfig
+
+
     - name: Set Kubernetes context
       run: kubectl config use-context docker-desktop
       
