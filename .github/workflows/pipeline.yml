@@ -42,20 +42,26 @@ jobs:
       run: |
         docker push pranjalgawande/counter-app:latest
 
-    - name: Set up Kubernetes
+    - name: Set up Minikube
+      run: |
+        curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+        sudo chmod +x minikube
+        sudo mv minikube /usr/local/bin/
+        minikube start --driver=docker  # Starts minikube using Docker driver
+
+    - name: Set up kubectl
       uses: azure/setup-kubectl@v3
       with:
         version: 'v1.24.0'
-  
+
     - name: Set up kubeconfig
       run: |
         echo "${{ secrets.KUBECONFIG_CONTENT }}" > kubeconfig
         export KUBECONFIG=$PWD/kubeconfig
 
-
     - name: Set Kubernetes context
-      run: kubectl config use-context minikube
-      
+      run: |
+        kubectl config use-context minikube
 
     - name: Deploy to Kubernetes
       run: |
