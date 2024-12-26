@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: counter-app-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: counter-app
+  template:
+    metadata:
+      labels:
+        app: counter-app
+    spec:
+      containers:
+        - name: counter-app
+          image: pranjalgawande/counter-app
+          ports:
+            - containerPort: 3000
